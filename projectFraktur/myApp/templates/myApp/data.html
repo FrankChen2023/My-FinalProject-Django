@@ -1,0 +1,31 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+
+    <script>
+        function show_confirm(){  
+        var result = confirm('You are deleting one page! Do you confirm to continue?');  
+        if(result){  
+            window.location.href="{% url 'delete' volume=volume minute=minutedata.database.minute %}"
+        }
+    } 
+    </script>
+
+    <head><title>Data Page</title></head>
+    <body>
+        <p><b>Year: </b>{{ minutedata.database.year }}</p>
+        <p><b>Date: </b>{{ minutedata.database.minute }}</p>
+        <p><b>Content:</b><a href="{% url 'edit' volume=volume minute=minutedata.database.minute %}">Edit</a></p>
+        {% for i in minutedata.database.content %}
+        <p>{{ i }}</p>
+        {% endfor %}
+
+
+        <input type='button' onclick="show_confirm()" value="Delete the page"></input>
+        <a href="{% url 'upload' volume=volume minute=minutedata.database.minute %}">Upload</a>
+
+    </body>
+</html>
+
+{% endblock %}

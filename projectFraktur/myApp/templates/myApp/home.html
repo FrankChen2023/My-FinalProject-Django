@@ -1,0 +1,14 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>Home Page</title></head>
+    <body>
+        <h1>Fraktur OCR & Searching System</h1>
+        <h1>Welcome! This system is created by team CHARLIE.</h1>
+        <p>1. <a href="{% url 'volume' %}">volume page. </a></p>
+        <p>2. <a href="{% url 'transcription' %}">transcription page. </a></p>
+    </body>
+</html>
+
+{% endblock %}

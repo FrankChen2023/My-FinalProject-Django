@@ -1,0 +1,23 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Index</title>
+    </head>
+    <body>
+        <h1>Transcription Page</h1>
+        <h2>Step</h2>
+        <p><b>1. </b>You can upload a picture below, or scan it on <a href="https://readcoop.eu/model/print-multi-language-danish-dutch-german-finnish-french-latin-swedish/"><b>Transkribus</b></a> and copy the result.</p>
+        <p><b>2. </b>Go to the <a href="{% url 'create' %}">create</a> page and create a new minute.</p>
+        <p><b>3. </b>Once you create a new minute successfully, you will be redirected to the data page.
+                     Click the upload button and paste the transcribed text and save it.</p>
+
+    </body>
+</html>
+
+{% endblock %}

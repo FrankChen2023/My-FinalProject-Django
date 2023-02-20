@@ -1,0 +1,29 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>Create Page</title></head>
+    <body>
+    <h1>Create Page</h1>
+    
+    <p>Please enter all boxes to create a new page.</p>
+    <form method="POST"> 
+        {% csrf_token %}
+        {{ msg }}
+        <p><b>volume:</b></p>
+        <select name="folder">
+            {% for volume in volumes %}
+            <option>{{ volume }}</option>
+            {% endfor %}
+        </select>
+        <p><b>Year:</b></p>
+        <p><input type = "number" step='1' name = "year" required></p>
+        <p><b>Date:</b></p>
+        <p><input type = "text" name = "minute" placeholder = "day-month-year eg.1-1-2023" required></p>
+        <p><input type="submit" value="Create"></p>
+     
+</form>
+    </body>
+</html>
+
+{% endblock %}

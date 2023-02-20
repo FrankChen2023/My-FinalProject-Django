@@ -1,0 +1,13 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>Index Page</title></head>
+    <body>
+        {% for index in indexes %}
+        <p><a href="{% url 'data' volume=volume minute=index %}">{{ index }}</a></p>
+        {% endfor %}
+    </body>
+</html>
+
+{% endblock %}

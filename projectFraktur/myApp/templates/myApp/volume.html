@@ -1,0 +1,13 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>volume Page</title></head>
+    <body>
+        {% for volume in volumes %}
+        <p><a href="{% url 'index' volume=volume %}">{{ volume }}</a></p>
+        {% endfor %}
+    </body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+<html>
+<head>
+    <title>Search Page</title>
+</head>
+    <body>
+        <h1>Search Page</h1>
+        <h2>Search:</h2>
+        <form method = "post">
+            {% csrf_token %}
+            <p>Enter the keyword:
+            <input type = "text" name = "keyword">
+            <input type = "submit" value = "Search" >  
+            </p>  
+        </form> 
+
+        <h2>Result: {{keyword}}</h2>
+        {% if res %}
+        <table border="1" style="text-align:center" width='100%'>
+        <tr><th>Volume</th><th>Minute</th><th>Paragraph</th><th>Context</th><th>Link</th></tr>
+        <tr>
+        {% for each in res %}
+            <td>{{each.volume}}</td>
+            <td>{{each.minute}}</td>
+            <td>{{each.paragraph}}</td>
+            <td>{{each.context}}</td>
+            <td><a href="{% url 'data' volume=each.volume minute=each.minute %}">link</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% else %}
+        </table>
+        Nothing matches, please check your keyword.
+        {% endif %}
+
+    </body>
+</html>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+
+    <head><title>Edit Page</title></head>
+    <body>
+        <form method="POST"> 
+            {% csrf_token %}
+            <p><b>Paragraph: </b><input type="number" step="1" name="paragraph"></p>
+            <p><b>Content:</b></p>
+            <textarea name = "content" rows="20" cols="150"></textarea>
+            <p><input type="submit" value="Upload"></p>
+            <a href="{% url 'data' volume=volume minute=minute %}">Go Back</a>
+         
+    </form>
+
+    </body>
+</html>
+
+{% endblock %}

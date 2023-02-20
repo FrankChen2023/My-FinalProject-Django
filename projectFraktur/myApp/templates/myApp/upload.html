@@ -1,0 +1,23 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>Upload Page</title></head>
+    <body>
+    <h1>Upload Page</h1>
+    
+    <p>Please enter the content of the certain minute.</p>
+    <form method="POST"> 
+        {% csrf_token %}
+        <p><b>Year:</b> {{year}}</p>
+        <p><b>Date:</b> {{minute}}</p>
+        <p><b>Content:</b> {{msg}}</p>
+        <textarea name = "content" rows="20" cols="150"></textarea>
+        <p><input type="submit" value="Upload"></p>
+        <a href="{% url 'data' volume=volume minute=minute %}">Go Back</a>
+     
+</form>
+    </body>
+</html>
+
+{% endblock %}

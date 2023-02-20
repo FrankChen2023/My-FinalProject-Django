@@ -1,0 +1,15 @@
+<html>
+    <body>
+        <p>
+
+        <a href = "{% url 'home' %}">Home</a> | 
+        <a href = "{% url 'volume' %}">Volume</a> | 
+        <a href = "{% url 'transcription' %}">Transcription</a> | 
+        <a href = "{% url 'create' %}">Create</a> | 
+        <a href = "{% url 'search' %}">Search</a> 
+
+        </p>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
