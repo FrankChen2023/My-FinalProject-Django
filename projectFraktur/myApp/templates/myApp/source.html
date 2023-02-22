@@ -1,0 +1,37 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>Source Data Page</title></head>
+    <body>
+        <div class="list">
+        {% for filename in filelist %}
+        <p><a href="{% url 'source' volume=volume minute=minute filename=filename %}">{{filename}}</a></p>
+        {% endfor %}
+    </div>
+
+        <div class="picture">
+        {% if filename %}
+        {% load static %}
+        <center>
+        <img src="{% static file %}" width="750" height="900"></div></center>
+        {% endif %}
+    </div>
+
+    </body>
+
+
+    <style>
+    .list{
+        float: left;
+        width: 10%;
+        height: 1000px;
+    }
+    .picture{
+        float: right;
+        width: 90%;
+    }
+    </style>
+</html>
+
+{% endblock %}

@@ -7,6 +7,7 @@ urlpatterns = [
     path('volume/', views.volume, name='volume'),
     path('index/<str:volume>', views.index, name='index'),
     path('data/<str:volume>/<str:minute>', views.data, name='data'),
+    path('source/<str:volume>/<str:minute>/<str:filename>', views.source, name='source'),
     path('edit/<str:volume>/<str:minute>', views.edit, name='edit'),
     path('transcription/', views.transcription, name='transcription'),
     path('delete/<str:volume>/<str:minute>', views.delete, name='delete'),

@@ -166,3 +166,28 @@ def edit(request, volume, minute):
         with open(os.path.join(filepath, filename), 'w') as newFile:
                 json.dump(newdata, newFile)
     return render(request, 'myApp/edit.html', {'volume' : volume, 'minutedata' : minutedata, 'minute' : minute})
+
+"""Function: source. """
+def source(request, volume, minute, filename):
+    filepath = str(base_dir) + '/myApp/static/' + volume + '/' + minute
+    filelist = os.listdir(filepath)
+    for i in range(1, len(filelist)):
+        j = i
+        while j!=0:
+            if filelist[j][0:2] ==  filelist[j-1][0:2] and (not filelist[j][2].isnumeric()):
+                filelist[j], filelist[j-1] = filelist[j-1], filelist[j]
+                j -= 1
+            elif int(filelist[j][0]) ==  int(filelist[j-1][0]) and (not filelist[j][1].isnumeric()):
+                filelist[j], filelist[j-1] = filelist[j-1], filelist[j]
+                j -= 1
+            elif int(filelist[j][0]) >  int(filelist[j-1][0]) and (not filelist[j][1].isnumeric()) and filelist[j-1][1].isnumeric():
+                filelist[j], filelist[j-1] = filelist[j-1], filelist[j]
+                j -= 1
+            else:
+                break
+            
+
+    if filename == 'default':
+        filename = filelist[0] 
+    file = volume + '/' + minute + '/' + filename
+    return render(request, 'myApp/source.html', {'volume' : volume, 'filelist' : filelist, 'minute' : minute, 'filename' : filename, 'file' : file})

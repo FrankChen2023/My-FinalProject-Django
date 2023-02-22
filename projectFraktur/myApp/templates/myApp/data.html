@@ -16,7 +16,10 @@
     <body>
         <p><b>Year: </b>{{ minutedata.database.year }}</p>
         <p><b>Date: </b>{{ minutedata.database.minute }}</p>
-        <p><b>Content:</b><a href="{% url 'edit' volume=volume minute=minutedata.database.minute %}">Edit</a></p>
+        <p><b>Content:</b>
+            <a href="{% url 'edit' volume=volume minute=minutedata.database.minute %}">Edit</a> | 
+            <a href="{% url 'source' volume=volume minute=minutedata.database.minute filename="default" %}">Source</a>
+        </p>
         {% for i in minutedata.database.content %}
         <p>{{ i }}</p>
         {% endfor %}
