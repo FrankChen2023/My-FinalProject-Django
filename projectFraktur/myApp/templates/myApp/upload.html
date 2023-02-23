@@ -6,15 +6,15 @@
     <body>
     <h1>Upload Page</h1>
     
-    <p>Please enter the content of the certain minute.</p>
+    <p>Please enter the content of the certain session.</p>
     <form method="POST"> 
         {% csrf_token %}
         <p><b>Year:</b> {{year}}</p>
-        <p><b>Date:</b> {{minute}}</p>
+        <p><b>Date:</b> {{session}}</p>
         <p><b>Content:</b> {{msg}}</p>
         <textarea name = "content" rows="20" cols="150"></textarea>
         <p><input type="submit" value="Upload"></p>
-        <a href="{% url 'data' volume=volume minute=minute %}">Go Back</a>
+        <a href="{% url 'data' volume=volume session=session %}">Go Back</a>
      
 </form>
     </body>

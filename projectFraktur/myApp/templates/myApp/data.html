@@ -7,26 +7,26 @@
         function show_confirm(){  
         var result = confirm('You are deleting one page! Do you confirm to continue?');  
         if(result){  
-            window.location.href="{% url 'delete' volume=volume minute=minutedata.database.minute %}"
+            window.location.href="{% url 'delete' volume=volume session=sessiondata.database.session %}"
         }
     } 
     </script>
 
     <head><title>Data Page</title></head>
     <body>
-        <p><b>Year: </b>{{ minutedata.database.year }}</p>
-        <p><b>Date: </b>{{ minutedata.database.minute }}</p>
+        <p><b>Year: </b>{{ sessiondata.database.year }}</p>
+        <p><b>Date: </b>{{ sessiondata.database.session }}</p>
         <p><b>Content:</b>
-            <a href="{% url 'edit' volume=volume minute=minutedata.database.minute %}">Edit</a> | 
-            <a href="{% url 'source' volume=volume minute=minutedata.database.minute filename="default" %}">Source</a>
+            <a href="{% url 'edit' volume=volume session=sessiondata.database.session %}">Edit</a> | 
+            <a href="{% url 'source' volume=volume session=sessiondata.database.session filename="default" %}">Source</a>
         </p>
-        {% for i in minutedata.database.content %}
+        {% for i in sessiondata.database.content %}
         <p>{{ i }}</p>
         {% endfor %}
 
 
         <input type='button' onclick="show_confirm()" value="Delete the page"></input>
-        <a href="{% url 'upload' volume=volume minute=minutedata.database.minute %}">Upload</a>
+        <a href="{% url 'upload' volume=volume session=sessiondata.database.session %}">Upload</a>
 
     </body>
 </html>

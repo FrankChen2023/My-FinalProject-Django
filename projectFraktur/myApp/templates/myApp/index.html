@@ -5,7 +5,7 @@
     <head><title>Index Page</title></head>
     <body>
         {% for index in indexes %}
-        <p><a href="{% url 'data' volume=volume minute=index %}">{{ index }}</a></p>
+        <p><a href="{% url 'data' volume=volume session=index %}">{{ index }}</a></p>
         {% endfor %}
     </body>
 </html>
