@@ -6,7 +6,7 @@
     <body>
         <div class="list">
         {% for filename in filelist %}
-        <p><a href="{% url 'source' volume=volume minute=minute filename=filename %}">{{filename}}</a></p>
+        <p><a href="{% url 'source' volume=volume session=session filename=filename %}">{{filename}}</a></p>
         {% endfor %}
     </div>
 

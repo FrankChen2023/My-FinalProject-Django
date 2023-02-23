@@ -6,8 +6,8 @@ import os
 
 """ Read json files. """
 base_dir = Path(__file__).resolve().parent.parent
-def readDB(volume, minute):
-    filename = str(base_dir) + '/data/' + volume + '/' + minute + '.json'
+def readDB(volume, session):
+    filename = str(base_dir) + '/data/' + volume + '/' + session + '.json'
     with open(filename, mode="r", encoding='UTF-8') as jsonFile:
         data = json.load(jsonFile)
     return data
@@ -36,9 +36,9 @@ def transcription(request):
     return render(request, 'myApp/transcription.html', {'trans_data' : trans_data})
 
 """Function: the exact content according to index. """
-def data(request, volume, minute):
-    minutedata = readDB(volume, minute)
-    return render(request, 'myApp/data.html', {'volume' : volume, 'minutedata' : minutedata})
+def data(request, volume, session):
+    sessiondata = readDB(volume, session)
+    return render(request, 'myApp/data.html', {'volume' : volume, 'sessiondata' : sessiondata})
 
 """ Function: list the index. """
 def volume(request):
@@ -52,26 +52,26 @@ def index(request, volume):
 
 
 """Function: delete page. """
-def delete(request, volume, minute):
+def delete(request, volume, session):
     filepath = str(base_dir) + '/data/' + volume
-    filename = minute + '.json'
+    filename = session + '.json'
     path = os.path.join(filepath, filename)
     os.remove(path)
     contentpath = str(base_dir) + '/data/' + volume + '/' + 'Contents.json'
     with open(contentpath, mode="r", encoding='UTF-8') as newContent:
         data = json.load(newContent)
         temp = data["contents"]
-        temp.remove(minute)
+        temp.remove(session)
     with open(contentpath, mode="w", encoding='UTF-8') as newContent:
         json.dump(data, newContent)
     return render(request, 'myApp/delete.html')
 
 """Function: upload a new page. """
-def upload(request, volume, minute):
+def upload(request, volume, session):
     msg = ''
     filepath = str(base_dir) + '/data/' + volume
-    filename = minute + '.json'
-    data = readDB(volume, minute)
+    filename = session + '.json'
+    data = readDB(volume, session)
     text = data["database"]["content"]
     length = (len(text) + 1) // 2
     if request.POST:
@@ -80,7 +80,7 @@ def upload(request, volume, minute):
         text.append(content)
         newdata = {
                 "database":{
-                "minute":minute,
+                "session":session,
                 "year":data["database"]["year"],
                 "content":text
                 }
@@ -88,11 +88,11 @@ def upload(request, volume, minute):
         with open(os.path.join(filepath, filename), 'w') as newFile:
             json.dump(newdata, newFile)
         msg = 'Success!'
-    return render(request, 'myApp/upload.html', {'year' : data["database"]["year"], 'minute' : minute, 'msg' : msg, 'volume' : volume})
+    return render(request, 'myApp/upload.html', {'year' : data["database"]["year"], 'session' : session, 'msg' : msg, 'volume' : volume})
 
 """Function: upload success page. """
-def success(request, minute, volume):
-    return render(request, 'myApp/success.html', {'minute' : minute, 'volume' : volume})
+def success(request, session, volume):
+    return render(request, 'myApp/success.html', {'session' : session, 'volume' : volume})
 
 """Function: create new page. """
 def create(request):
@@ -100,16 +100,16 @@ def create(request):
     volumes = readvolume()["volumes"]
     if request.POST:
         volume = request.POST.get('folder')
-        minute = request.POST.get('minute')
+        session = request.POST.get('session')
         year = request.POST.get('year')
-        if minute in readDB(volume, 'Contents')["contents"]:
-            msg = 'Wrong! The same minute name has existed!'
+        if session in readDB(volume, 'Contents')["contents"]:
+            msg = 'Wrong! The same session name has existed!'
         else:
             filepath = str(base_dir) + '/data/' + volume
-            filename = minute + '.json'
+            filename = session + '.json'
             newdata = {
                     "database":{
-                    "minute":minute,
+                    "session":session,
                     "year":year,
                     "content":[]
                     }
@@ -120,10 +120,10 @@ def create(request):
             with open(contentpath, mode="r", encoding='UTF-8') as newContent:
                 data = json.load(newContent)
                 temp = data["contents"]
-                temp.append(minute)
+                temp.append(session)
             with open(contentpath, mode="w", encoding='UTF-8') as newContent:
                 json.dump(data, newContent)
-            return redirect('success', minute=minute, volume=volume)
+            return redirect('success', session=session, volume=volume)
     return render(request, 'myApp/create.html',  {'volumes' : volumes, 'msg' : msg})
 
 """Function: search by key words. """
@@ -135,41 +135,41 @@ def search(request):
         keyword = request.POST.get('keyword')
         for volume in volumes:
             contents = readDB(volume, 'Contents')["contents"]
-            for minute in contents:
-                data = readDB(volume, minute)["database"]["content"]
+            for session in contents:
+                data = readDB(volume, session)["database"]["content"]
                 for each in range(len(data)):
                     if keyword in data[each]:
                         index = data[each].index(keyword)
                         left = max(0, index-60)
                         right = min(index+60, len(data[each]))
-                        res.append({'volume':volume, 'minute':minute, 'context': '...' + data[each][left:right+1] + '...', 'paragraph':data[each-1]})
+                        res.append({'volume':volume, 'session':session, 'context': '...' + data[each][left:right+1] + '...', 'paragraph':data[each-1]})
                         continue
     return render(request, 'myApp/search.html',  {'res' : res, 'keyword' : keyword})
 
 """Function: edit. """
-def edit(request, volume, minute):
-    minutedata = readDB(volume, minute)
+def edit(request, volume, session):
+    sessiondata = readDB(volume, session)
     filepath = str(base_dir) + '/data/' + volume
-    filename = minute + '.json'
+    filename = session + '.json'
     if request.POST:
         paragraph = int(request.POST.get('paragraph'))
         content = request.POST.get('content')
-        newcontent = minutedata["database"]["content"]
+        newcontent = sessiondata["database"]["content"]
         newcontent[paragraph*2+1] = content
         newdata = {
                     "database":{
-                    "minute":minute,
-                    "year":minutedata["database"]["year"],
+                    "session":session,
+                    "year":sessiondata["database"]["year"],
                     "content": newcontent
                     }
                 }
         with open(os.path.join(filepath, filename), 'w') as newFile:
                 json.dump(newdata, newFile)
-    return render(request, 'myApp/edit.html', {'volume' : volume, 'minutedata' : minutedata, 'minute' : minute})
+    return render(request, 'myApp/edit.html', {'volume' : volume, 'sessiondata' : sessiondata, 'session' : session})
 
 """Function: source. """
-def source(request, volume, minute, filename):
-    filepath = str(base_dir) + '/myApp/static/' + volume + '/' + minute
+def source(request, volume, session, filename):
+    filepath = str(base_dir) + '/myApp/static/' + volume + '/' + session
     filelist = os.listdir(filepath)
     for i in range(1, len(filelist)):
         j = i
@@ -189,5 +189,5 @@ def source(request, volume, minute, filename):
 
     if filename == 'default':
         filename = filelist[0] 
-    file = volume + '/' + minute + '/' + filename
-    return render(request, 'myApp/source.html', {'volume' : volume, 'filelist' : filelist, 'minute' : minute, 'filename' : filename, 'file' : file})
+    file = volume + '/' + session + '/' + filename
+    return render(request, 'myApp/source.html', {'volume' : volume, 'filelist' : filelist, 'session' : session, 'filename' : filename, 'file' : file})
