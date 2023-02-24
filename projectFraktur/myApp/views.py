@@ -75,8 +75,12 @@ def upload(request, volume, session):
     text = data["database"]["content"]
     length = (len(text) + 1) // 2
     if request.POST:
+        paragraph = request.POST.get('paragraph')
         content = request.POST.get('content')
-        text.append('\u00a7.'+str(length))
+        if paragraph == '0':
+            text.append('Attendees')
+        else:
+            text.append('\u00a7.' + paragraph)
         text.append(content)
         newdata = {
                 "database":{
@@ -133,6 +137,7 @@ def search(request):
     keyword = ''
     if request.POST:
         keyword = request.POST.get('keyword')
+        order = 1
         for volume in volumes:
             contents = readDB(volume, 'Contents')["contents"]
             for session in contents:
@@ -142,7 +147,8 @@ def search(request):
                         index = data[each].index(keyword)
                         left = max(0, index-60)
                         right = min(index+60, len(data[each]))
-                        res.append({'volume':volume, 'session':session, 'context': '...' + data[each][left:right+1] + '...', 'paragraph':data[each-1]})
+                        res.append({'order': order, 'volume':volume, 'session':session, 'context': '...' + data[each][left:right+1] + '...', 'paragraph':data[each-1]})
+                        order += 1
                         continue
     return render(request, 'myApp/search.html',  {'res' : res, 'keyword' : keyword})
 
@@ -155,7 +161,8 @@ def edit(request, volume, session):
         paragraph = int(request.POST.get('paragraph'))
         content = request.POST.get('content')
         newcontent = sessiondata["database"]["content"]
-        newcontent[paragraph*2+1] = content
+        direction = (paragraph - int(newcontent[2][2:]))*2 + 3
+        newcontent[direction] = content
         newdata = {
                     "database":{
                     "session":session,
@@ -171,23 +178,11 @@ def edit(request, volume, session):
 def source(request, volume, session, filename):
     filepath = str(base_dir) + '/myApp/static/' + volume + '/' + session
     filelist = os.listdir(filepath)
-    for i in range(1, len(filelist)):
-        j = i
-        while j!=0:
-            if filelist[j][0:2] ==  filelist[j-1][0:2] and (not filelist[j][2].isnumeric()):
-                filelist[j], filelist[j-1] = filelist[j-1], filelist[j]
-                j -= 1
-            elif int(filelist[j][0]) ==  int(filelist[j-1][0]) and (not filelist[j][1].isnumeric()):
-                filelist[j], filelist[j-1] = filelist[j-1], filelist[j]
-                j -= 1
-            elif int(filelist[j][0]) >  int(filelist[j-1][0]) and (not filelist[j][1].isnumeric()) and filelist[j-1][1].isnumeric():
-                filelist[j], filelist[j-1] = filelist[j-1], filelist[j]
-                j -= 1
-            else:
-                break
-            
-
-    if filename == 'default':
-        filename = filelist[0] 
+    numdic = {}
+    for v in filelist:
+        right = v.index('[')
+        numdic[v] = v[4:right]
+    res = dict(sorted(numdic.items(), key=lambda item: int(item[1])))
+    filelist = res.keys()
     file = volume + '/' + session + '/' + filename
     return render(request, 'myApp/source.html', {'volume' : volume, 'filelist' : filelist, 'session' : session, 'filename' : filename, 'file' : file})

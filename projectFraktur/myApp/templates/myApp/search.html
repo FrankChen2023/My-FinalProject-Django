@@ -18,14 +18,15 @@
         <h2>Result: {{keyword}}</h2>
         {% if res %}
         <table border="1" style="text-align:center" width='100%'>
-        <tr><th>Volume</th><th>Minute</th><th>Paragraph</th><th>Context</th><th>Link</th></tr>
+        <tr><th>Order</th><th>Volume</th><th>Session</th><th>Paragraph</th><th>Context</th><th>Link</th></tr>
         <tr>
         {% for each in res %}
+            <td>{{each.order}}</td>
             <td>{{each.volume}}</td>
-            <td>{{each.minute}}</td>
+            <td>{{each.session}}</td>
             <td>{{each.paragraph}}</td>
             <td>{{each.context}}</td>
-            <td><a href="{% url 'data' volume=each.volume minute=each.minute %}">link</a></td>
+            <td><a href="{% url 'data' volume=each.volume session=each.session %}">link</a></td>
         </tr>
         {% endfor %}
         </table>
