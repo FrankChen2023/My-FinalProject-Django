@@ -7,7 +7,7 @@
     <body>
         <form method="POST"> 
             {% csrf_token %}
-            <p><b>Paragraph: </b><input type="number" step="1" name="paragraph"></p>
+            <p><b>Paragraph: </b><input type="number" step="1" name="paragraph" required></p>
             <p><b>Content:</b></p>
             <textarea name = "content" rows="20" cols="150"></textarea>
             <p><input type="submit" value="Upload"></p>
