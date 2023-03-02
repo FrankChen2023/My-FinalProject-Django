@@ -18,7 +18,8 @@
         <p><b>Date: </b>{{ sessiondata.database.session }}</p>
         <p><b>Content:</b>
             <a href="{% url 'edit' volume=volume session=sessiondata.database.session %}">Edit</a> | 
-            <a href="{% url 'source' volume=volume session=sessiondata.database.session filename="default" %}">Source</a>
+            <a href="{% url 'source' volume=volume session=sessiondata.database.session filename="default" %}">Source</a> | 
+            <a href="{% url 'upload' volume=volume session=sessiondata.database.session %}">Upload</a>
         </p>
         {% for i in sessiondata.database.content %}
         <p>{{ i }}</p>
@@ -26,7 +27,6 @@
 
 
         <input type='button' onclick="show_confirm()" value="Delete the page"></input>
-        <a href="{% url 'upload' volume=volume session=sessiondata.database.session %}">Upload</a>
 
     </body>
 </html>

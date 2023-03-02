@@ -12,6 +12,7 @@
             <textarea name = "content" rows="20" cols="150"></textarea>
             <p><input type="submit" value="Upload"></p>
             <a href="{% url 'data' volume=volume session=session %}">Go Back</a>
+            <p>This page is only used to edit existed paragraph. If you want to upload a new paragraph, please go to <a href="{% url 'upload' volume=volume session=session %}">Upload</a> page.</p>
          
     </form>
 

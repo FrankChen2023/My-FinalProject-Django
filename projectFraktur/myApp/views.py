@@ -78,7 +78,7 @@ def upload(request, volume, session):
         paragraph = request.POST.get('paragraph')
         content = request.POST.get('content')
         if paragraph == '0':
-            text.append('Attendees')
+            text.append('Description')
         else:
             text.append('\u00a7.' + paragraph)
         text.append(content)
