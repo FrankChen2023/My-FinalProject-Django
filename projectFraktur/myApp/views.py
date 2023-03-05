@@ -161,7 +161,10 @@ def edit(request, volume, session):
         paragraph = int(request.POST.get('paragraph'))
         content = request.POST.get('content')
         newcontent = sessiondata["database"]["content"]
-        direction = (paragraph - int(newcontent[2][2:]))*2 + 3
+        try:
+            direction = (paragraph - int(newcontent[2][2:]))*2 + 3
+        except IndexError:
+            direction = 1
         newcontent[direction] = content
         newdata = {
                     "database":{
