@@ -14,5 +14,6 @@ urlpatterns = [
     path('upload/<str:volume>/<str:session>', views.upload, name='upload'),
     path('success/<str:volume>/<str:session>', views.success, name='success'),
     path('create/', views.create, name='create'),
-    path('search/', views.search, name='search'),
+    path('search/<str:target>', views.search, name='search'),
+    path('index_page/<str:volume>', views.index_page, name='index_page'),
     ]

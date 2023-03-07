@@ -6,7 +6,7 @@
         <a href = "{% url 'volume' %}">Volume</a> | 
         <a href = "{% url 'transcription' %}">Transcription</a> | 
         <a href = "{% url 'create' %}">Create</a> | 
-        <a href = "{% url 'search' %}">Search</a> 
+        <a href = "{% url 'search' target=None %}">Search</a> 
 
         </p>
         {% block content %}

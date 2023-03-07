@@ -1,0 +1,16 @@
+{% extends 'myApp/base.html' %}
+{% block content %}
+
+<html>
+    <head><title>Index Page</title></head>
+    <body>
+        <h3>A:</h3>
+        <p>
+        {% for topic in index.A %}
+        <a href="{% url 'search' target=topic %}">{{ topic }}</a> |
+        {% endfor %}
+    </p>
+    </body>
+</html>
+
+{% endblock %}

@@ -131,26 +131,25 @@ def create(request):
     return render(request, 'myApp/create.html',  {'volumes' : volumes, 'msg' : msg})
 
 """Function: search by key words. """
-def search(request):
+def search(request, target):
     res = []
     volumes = readvolume()["volumes"]
-    keyword = ''
     if request.POST:
-        keyword = request.POST.get('keyword')
-        order = 1
-        for volume in volumes:
-            contents = readDB(volume, 'Contents')["contents"]
-            for session in contents:
-                data = readDB(volume, session)["database"]["content"]
-                for each in range(len(data)):
-                    if keyword in data[each]:
-                        index = data[each].index(keyword)
-                        left = max(0, index-60)
-                        right = min(index+60, len(data[each]))
-                        res.append({'order': order, 'volume':volume, 'session':session, 'context': '...' + data[each][left:right+1] + '...', 'paragraph':data[each-1]})
-                        order += 1
-                        continue
-    return render(request, 'myApp/search.html',  {'res' : res, 'keyword' : keyword})
+        target = request.POST.get('keyword')
+    order = 1
+    for volume in volumes:
+        contents = readDB(volume, 'Contents')["contents"]
+        for session in contents:
+            data = readDB(volume, session)["database"]["content"]
+            for each in range(len(data)):
+                if target in data[each]:
+                    index = data[each].index(target)
+                    left = max(0, index-60)
+                    right = min(index+60, len(data[each]))
+                    res.append({'order': order, 'volume':volume, 'session':session, 'context': '...' + data[each][left:right+1] + '...', 'paragraph':data[each-1]})
+                    order += 1
+                    continue
+    return render(request, 'myApp/search.html',  {'res' : res, 'keyword' : target})
 
 """Function: edit. """
 def edit(request, volume, session):
@@ -189,3 +188,8 @@ def source(request, volume, session, filename):
     filelist = res.keys()
     file = volume + '/' + session + '/' + filename
     return render(request, 'myApp/source.html', {'volume' : volume, 'filelist' : filelist, 'session' : session, 'filename' : filename, 'file' : file})
+
+"""Function: index page. """
+def index_page(request, volume):
+    index = readDB(volume, 'index')
+    return render(request, 'myApp/index_page.html', {'index' : index})
